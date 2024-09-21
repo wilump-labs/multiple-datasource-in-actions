@@ -1,0 +1,92 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: multiple-datasource
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+---
+spring.config.activate.on-profile: local
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  datasource:
+    banking:
+      driver-class-name: org.h2.Driver
+      url: jdbc:h2:mem:testdb1;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      username: sa
+      password:
+    membership:
+      driver-class-name: org.h2.Driver
+      url: jdbc:h2:mem:testdb2;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      username: sa
+      password:
+
+logging.level.org.hibernate.SQL: DEBUG
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+---
+spring.config.activate.on-profile: local-dev
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  datasource:
+    banking:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:13306/testdb1
+      username: root
+      password: 12345678
+      hikari:
+        auto-commit: true
+        connection-test-query: SELECT 1
+        maximum-pool-size: 10
+        pool-name: banking-cp
+    membership:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:13306/testdb2
+        username: root
+        password: 12345678
+        hikari:
+          auto-commit: true
+          connection-test-query: SELECT 1
+          maximum-pool-size: 10
+          pool-name: membership-cp
+
+logging.level.org.hibernate.SQL: DEBUG
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+---
+spring.config.activate.on-profile: open-in-view-test
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb1;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
