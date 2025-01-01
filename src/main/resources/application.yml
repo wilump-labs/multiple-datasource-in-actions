@@ -27,6 +27,11 @@ spring:
       url: jdbc:h2:mem:testdb1;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
       username: sa
       password:
+    banking-reader:
+      driver-class-name: org.h2.Driver
+      url: jdbc:h2:mem:testdb1;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      username: sa
+      password:
     membership:
       driver-class-name: org.h2.Driver
       url: jdbc:h2:mem:testdb2;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
@@ -57,6 +62,16 @@ spring:
         connection-test-query: SELECT 1
         maximum-pool-size: 10
         pool-name: banking-cp
+    banking-reader:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:13306/testdb1
+      username: root
+      password: 12345678
+      hikari:
+        auto-commit: true
+        connection-test-query: SELECT 1
+        maximum-pool-size: 10
+        pool-name: banking-reader-cp
     membership:
         driver-class-name: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://localhost:13306/testdb2
